@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node test/duplicate-and-ui.test.js",
+    "test": "node test/duplicate-and-ui.test.js && node test/slice5-lifecycle.test.js",
     "preview": "vite preview"
   },
   "dependencies": {

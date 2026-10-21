@@ -43,9 +43,56 @@ export function useReminders() {
     }
   }, [])
 
+  const updateReminder = useCallback((id, updatedFields) => {
+    try {
+      setStorageError(null)
+      setReminders((prev) => {
+        const updated = prev.map((item) => {
+          if (item.id !== id) return item
+          return {
+            ...item,
+            task: (updatedFields.task || item.task).trim(),
+            dueDate: updatedFields.dueDate !== undefined ? updatedFields.dueDate : item.dueDate,
+            amount:
+              updatedFields.amount !== undefined &&
+              updatedFields.amount !== null &&
+              updatedFields.amount !== ''
+                ? Number(updatedFields.amount)
+                : updatedFields.amount === '' ? null : item.amount,
+            category: updatedFields.category || item.category
+          }
+        })
+        const sorted = sortReminders(updated)
+        saveReminders(sorted)
+        return sorted
+      })
+    } catch (err) {
+      console.error('Failed to update reminder:', err)
+      setStorageError(err.message || 'Failed to update reminder in storage.')
+      throw err
+    }
+  }, [])
+
+  const deleteReminder = useCallback((id) => {
+    try {
+      setStorageError(null)
+      setReminders((prev) => {
+        const filtered = prev.filter((item) => item.id !== id)
+        saveReminders(filtered)
+        return filtered
+      })
+    } catch (err) {
+      console.error('Failed to delete reminder:', err)
+      setStorageError(err.message || 'Failed to remove reminder from storage.')
+      throw err
+    }
+  }, [])
+
   return {
     reminders,
     addReminder,
+    updateReminder,
+    deleteReminder,
     storageError,
     clearStorageError: () => setStorageError(null)
   }

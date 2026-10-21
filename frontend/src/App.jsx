@@ -18,12 +18,15 @@ export default function App() {
     extractedData,
     error: analyzeError,
     analyze,
-    clear: clearAnalysis
+    clear: clearAnalysis,
+    openManualEntry
   } = useAnalyzeReminder()
 
   const {
     reminders,
     addReminder,
+    updateReminder,
+    deleteReminder,
     storageError,
     clearStorageError
   } = useReminders()
@@ -75,10 +78,28 @@ export default function App() {
           loadingSlow={loadingSlow}
         />
 
-        {/* Extraction Error */}
+        {/* Extraction Error & Graceful Manual Fallback */}
         {analyzeError && (
           <Card style={{ borderLeft: '4px solid var(--error-color)', background: 'var(--error-bg)' }}>
-            <p style={{ color: 'var(--error-text)', fontSize: '0.9rem' }}>{analyzeError}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <p style={{ color: 'var(--error-text)', fontSize: '0.9rem' }}>{analyzeError}</p>
+              <div style={{ display: 'flex', gap: '0.85rem', alignItems: 'center' }}>
+                <button
+                  type="button"
+                  className="btn-manual-entry"
+                  onClick={() => openManualEntry(undefined, inputText)}
+                >
+                  Enter details manually →
+                </button>
+                <button
+                  type="button"
+                  onClick={clearAnalysis}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.825rem' }}
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
           </Card>
         )}
 
@@ -112,7 +133,11 @@ export default function App() {
         )}
 
         {/* Upcoming Reminders List */}
-        <ReminderList reminders={reminders} />
+        <ReminderList
+          reminders={reminders}
+          onUpdateReminder={updateReminder}
+          onDeleteReminder={deleteReminder}
+        />
       </main>
 
       {/* Confirmation Toast */}

@@ -42,6 +42,25 @@ export function useAnalyzeReminder() {
     }
   }, [])
 
+  const openManualEntry = useCallback(
+    (
+      note = "We couldn't find a clear task or date in this message. You can fill in the details manually below.",
+      sourceText = ''
+    ) => {
+      setError(null)
+      setExtractedData({
+        task: '',
+        dueDate: '',
+        amount: null,
+        category: 'Other',
+        extractionNote: note,
+        sourceFingerprint: sourceText ? computeMessageFingerprint(sourceText) : null,
+        isManualFallback: true
+      })
+    },
+    []
+  )
+
   const clear = useCallback(() => {
     setExtractedData(null)
     setError(null)
@@ -53,6 +72,7 @@ export function useAnalyzeReminder() {
     extractedData,
     error,
     analyze,
-    clear
+    clear,
+    openManualEntry
   }
 }

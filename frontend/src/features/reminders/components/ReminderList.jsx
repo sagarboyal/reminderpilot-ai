@@ -2,7 +2,7 @@ import React from 'react'
 import Card from '../../../components/Card'
 import ReminderRow from './ReminderRow'
 
-export default function ReminderList({ reminders }) {
+export default function ReminderList({ reminders, onUpdateReminder, onDeleteReminder }) {
   const hasReminders = Array.isArray(reminders) && reminders.length > 0
 
   return (
@@ -26,7 +26,12 @@ export default function ReminderList({ reminders }) {
       ) : (
         <div className="reminder-list">
           {reminders.map((reminder) => (
-            <ReminderRow key={reminder.id} reminder={reminder} />
+            <ReminderRow
+              key={reminder.id}
+              reminder={reminder}
+              onUpdate={onUpdateReminder}
+              onDelete={onDeleteReminder}
+            />
           ))}
         </div>
       )}
