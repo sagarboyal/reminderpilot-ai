@@ -29,7 +29,7 @@ Build mode: learn
   Learner check: Start the Spring Boot backend (`mvnw spring-boot:run`) and inspect the startup logs to see the Gemini diagnostic check message.
   Commit: backend: add startup gemini connectivity check and logging
 
-- [ ] **3. Approve and save reminders to localStorage and view upcoming list**
+- [x] **3. Approve and save reminders to localStorage and view upcoming list**
   Becomes usable: Clicking "Approve & Save" saves the reminder into browser `localStorage`, displays a brief "Reminder saved ✓" toast, clears the paste box, and renders the reminder in the Upcoming Reminders list sorted soonest-first with urgency cues and category pills. Reminders persist on page reload.
   Why now: Completes the full core loop and data persistence model so user-approved data is safely stored and visible.
   PRD ref: `prd.md > Approve and Save`, `prd.md > Upcoming Reminders List`, `prd.md > States and Boundaries`
