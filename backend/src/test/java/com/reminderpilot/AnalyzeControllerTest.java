@@ -68,4 +68,19 @@ class AnalyzeControllerTest {
         assertEquals("2026-11-15", response.getBody().dueDate());
         assertEquals("Appointment", response.getBody().category());
     }
+
+    @Test
+    void testFallbackNoteIsCleanWithoutRawJsonOrEol() {
+        String message = "Your electricity bill of ₹1,250 is due on 25 October 2026.";
+        AnalyzeRequest request = new AnalyzeRequest(message);
+
+        ResponseEntity<AnalyzeResponse> response = controller.analyze(request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().success());
+        assertEquals("AI unavailable. Using local extraction—please review the details.", response.getBody().extractionNote());
+        assertFalse(response.getBody().extractionNote().contains("<EOL>"));
+        assertFalse(response.getBody().extractionNote().contains("503"));
+    }
 }

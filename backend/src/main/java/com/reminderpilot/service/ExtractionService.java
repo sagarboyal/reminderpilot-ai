@@ -43,7 +43,7 @@ public class ExtractionService {
             log.info("GEMINI_API_KEY is not set. Using local extraction fallback.");
             return extractLocally(
                     userMessage,
-                    "Offline fallback used: GEMINI_API_KEY environment variable is not set. Configure your Gemini API key for live AI extraction."
+                    "AI unavailable. Using local extraction—please review the details."
             );
         }
 
@@ -53,7 +53,7 @@ public class ExtractionService {
             log.error("Gemini API call failed: {}. Falling back to local extractor.", e.getMessage());
             return extractLocally(
                     userMessage,
-                    "Notice: Gemini API call failed (" + e.getMessage() + "). Local extractor provided fallback details."
+                    "AI unavailable. Using local extraction—please review the details."
             );
         }
     }
@@ -246,6 +246,10 @@ public class ExtractionService {
                     ? text.substring(0, dotIndex).trim()
                     : (text.length() > 50 ? text.substring(0, 50).trim() + "..." : text.trim());
             taskConfident = !task.isBlank();
+        }
+
+        if (task == null || task.isBlank()) {
+            return AnalyzeResponse.failure("Couldn't analyze your message. Please try again or enter the details manually.");
         }
 
         return AnalyzeResponse.success(
