@@ -1,0 +1,93 @@
+================================================================================
+                     REMINDERPILOT - SAMPLE TEST MESSAGES
+================================================================================
+
+Copy and paste these sample messages into ReminderPilot (http://localhost:5173)
+to test extraction, classification, urgency indicators, and duplicate detection.
+
+--------------------------------------------------------------------------------
+1. UTILITY & CREDIT CARD BILLS (Category: Bill)
+--------------------------------------------------------------------------------
+
+[Test 1: Electricity Bill]
+Dear Customer, your electricity bill of ₹1,420 for account #94821 is generated. Please pay before 28 October 2026 to avoid late fees and power disconnection.
+
+[Test 2: High-speed Fiber Internet Bill]
+Airtel Xstream Fiber: Your monthly broadband bill of ₹999 for October is due on 30 October 2026. Pay via Airtel Thanks app to avoid service suspension.
+
+[Test 3: Credit Card Statement]
+HDFC Bank Alert: Total amount due on credit card ending in 4129 is ₹8,450.00. Payment due date is 04 November 2026. Minimum due is ₹850.
+
+[Test 4: Piped Natural Gas Bill]
+Mahanagar Gas Notice: Bill for consumer 882194 is ₹680. Due date for payment without surcharge is 12 November 2026.
+
+[Test 5: Water Supply Bill]
+Municipal Corporation: Water utility bill for Q3 is ₹450. Please settle payment by 15 November 2026.
+
+
+--------------------------------------------------------------------------------
+2. APPOINTMENTS & MEETINGS (Category: Appointment)
+--------------------------------------------------------------------------------
+
+[Test 6: Dental Cleaning]
+Appointment Confirmed: You have a dental cleaning and checkup scheduled with Dr. Neha Sharma at Smile Clinic on 29 October 2026 at 4:30 PM.
+
+[Test 7: Car Maintenance Service]
+Reminder: Your Hyundai Creta periodic car servicing appointment is confirmed at Velocity Motors for 06 November 2026 at 9:00 AM.
+
+[Test 8: Eye Examination]
+Vision Care: Your comprehensive eye examination with Dr. Mehta is booked for 10 November 2026 at 11:15 AM.
+
+[Test 9: Client Roadmap Meeting]
+Reminder: Quarterly Roadmap Review meeting with the Enterprise Architecture team is scheduled for 18 November 2026 at 2:00 PM.
+
+
+--------------------------------------------------------------------------------
+3. SUBSCRIPTIONS (Category: Subscription)
+--------------------------------------------------------------------------------
+
+[Test 10: Streaming Service]
+Netflix Renewal Notice: Your Premium subscription of ₹649 will automatically renew on 01 November 2026. Check your payment settings.
+
+[Test 11: Gym Membership]
+Cult.fit Fitness Pass: Your annual gym membership of ₹14,999 expires on 25 November 2026. Renew early to retain your member discount.
+
+[Test 12: Cloud Storage Plan]
+Google One 100GB Storage: Your annual renewal of ₹1,300 is scheduled for deduction on 14 November 2026.
+
+[Test 13: Domain Name Renewal]
+GoDaddy Alert: Domain reminderpilot.com will renew for ₹1,199 on 20 November 2026. Ensure payment method is active.
+
+
+--------------------------------------------------------------------------------
+4. URGENCY STATES (Tests Overdue & Due Today Indicators)
+--------------------------------------------------------------------------------
+
+[Test 14: Due Today (Tests Amber "Due Today" Tag)]
+URGENT: Your mobile postpaid bill payment of ₹599 is due today, 21 October 2026. Pay now to prevent outgoing call barring.
+
+[Test 15: Overdue Notice (Tests Red "Overdue" Cue & Left Border)]
+FINAL NOTICE: Your apartment maintenance fee of ₹3,200 was due on 15 October 2026 and is now overdue. Please clear immediately.
+
+
+--------------------------------------------------------------------------------
+5. DUPLICATE DETECTION TESTING (Slice 4 Feature)
+--------------------------------------------------------------------------------
+
+[Test 16: Exact Duplicate of Test 1]
+(Paste this AFTER approving Test 1 above. Should trigger amber warning banner, "Save Anyway" button, and "View Existing Reminder" scroll):
+Dear Customer, your electricity bill of ₹1,420 for account #94821 is generated. Please pay before 28 October 2026 to avoid late fees and power disconnection.
+
+[Test 17: Same Task, Different Date (Should NOT trigger duplicate)]
+Dear Customer, your electricity bill of ₹1,420 for account #94821 is generated. Please pay before 28 November 2026.
+
+
+--------------------------------------------------------------------------------
+6. EDGE CASES & UNSTRUCTURED TEXT
+--------------------------------------------------------------------------------
+
+[Test 18: Relative Date / Missing Exact Date]
+Hey, don't forget we need to pay for the team dinner tomorrow evening. My share is around 500 rupees.
+(Expected: Extracts task and amount, leaves dueDate null so you can pick date manually).
+
+================================================================================

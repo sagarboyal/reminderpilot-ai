@@ -39,7 +39,7 @@ Build mode: learn
   Learner check: Approve an extracted reminder, verify the toast appears and the item shows up in the upcoming list. Refresh the page to verify it persists.
   Commit: add reminder approval and localstorage persistence with upcoming list
 
-- [ ] **4. Detect duplicates and show amber warning with override**
+- [x] **4. Detect duplicates and show amber warning with override**
   Becomes usable: When analyzing a message whose extracted task and date match an existing saved reminder in localStorage, an amber warning banner appears above the card showing the existing item, and the button changes to "Save Anyway" to allow deliberate override.
   Why now: Delivers the core anti-duplicate promise of ReminderPilot before adding management actions.
   PRD ref: `prd.md > Duplicate Detection`
