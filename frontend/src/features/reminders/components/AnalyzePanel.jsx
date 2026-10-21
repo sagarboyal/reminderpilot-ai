@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
 import Button from '../../../components/Button'
-import LoadingIndicator from '../../../components/LoadingIndicator'
 
 export default function AnalyzePanel({
   onAnalyze,
@@ -41,6 +40,13 @@ export default function AnalyzePanel({
           rows={4}
         />
         <div className="action-row">
+          {loading && (
+            <div className="analysis-status" role="status" aria-live="polite">
+              <span className="analysis-status-text">
+                {loadingSlow ? 'Still working…' : 'Analyzing your message…'}
+              </span>
+            </div>
+          )}
           <Button
             type="submit"
             variant="primary"
@@ -51,13 +57,6 @@ export default function AnalyzePanel({
           </Button>
         </div>
       </form>
-
-      {loading && (
-        <LoadingIndicator
-          message={loadingSlow ? 'Still working…' : 'Reading your message…'}
-          style={{ marginTop: '1rem', marginBottom: 0 }}
-        />
-      )}
     </Card>
   )
 }

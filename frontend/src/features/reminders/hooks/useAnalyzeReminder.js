@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import { analyzeMessage } from '../../../api/analyzeApi'
+import { computeMessageFingerprint } from '../../../utils/fingerprint'
 
 /**
  * Custom hook encapsulating message analysis state and API interactions.
@@ -23,9 +24,14 @@ export function useAnalyzeReminder() {
     }, 5000)
 
     try {
+      const fingerprint = computeMessageFingerprint(message)
       const result = await analyzeMessage(message)
-      setExtractedData(result)
-      return result
+      const enrichedResult = {
+        ...result,
+        sourceFingerprint: fingerprint
+      }
+      setExtractedData(enrichedResult)
+      return enrichedResult
     } catch (err) {
       setError(err.message || 'An unexpected error occurred.')
       return null

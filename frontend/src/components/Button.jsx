@@ -9,7 +9,12 @@ export default function Button({
   type = 'button',
   ...props
 }) {
-  const variantClass = variant === 'secondary' ? 'btn-secondary' : 'btn-primary'
+  let variantClass = 'btn-primary'
+  if (variant === 'secondary') {
+    variantClass = 'btn-secondary'
+  } else if (variant === 'warning') {
+    variantClass = 'btn-warning'
+  }
   const isActionDisabled = disabled || loading
 
   return (

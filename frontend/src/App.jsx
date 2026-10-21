@@ -47,6 +47,17 @@ export default function App() {
     clearAnalysis()
   }
 
+  const handleViewExisting = (reminderId) => {
+    const el = document.getElementById(`reminder-${reminderId}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      el.classList.add('highlight-flash')
+      setTimeout(() => {
+        el.classList.remove('highlight-flash')
+      }, 1600)
+    }
+  }
+
   return (
     <div className="app-container">
       <header className="app-header">
@@ -90,10 +101,12 @@ export default function App() {
         {/* Review Proposed Reminder Card */}
         {extractedData && (
           <ProposedReminderCard
-            key={`${extractedData.task}-${extractedData.dueDate}-${extractedData.amount}`}
+            key={`${extractedData.task}-${extractedData.dueDate}-${extractedData.amount}-${extractedData.sourceFingerprint || ''}`}
             extractedData={extractedData}
+            existingReminders={reminders}
             onApprove={handleApprove}
             onCancel={handleCancel}
+            onViewExisting={handleViewExisting}
             saving={saving}
           />
         )}

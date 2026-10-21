@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import Card from '../../../components/Card'
 import Button from '../../../components/Button'
+import DuplicateWarning from './DuplicateWarning'
 import { REMINDER_CATEGORIES, DEFAULT_CATEGORY } from '../constants'
 
 export default function ProposedReminderCard({
   extractedData,
+  existingReminders = [],
   onApprove,
   onCancel,
-  duplicateWarning = null,
+  onViewExisting,
   saving = false
 }) {
   const [task, setTask] = useState(() => extractedData?.task || '')
@@ -19,33 +21,73 @@ export default function ProposedReminderCard({
   )
   const [category, setCategory] = useState(() => extractedData?.category || DEFAULT_CATEGORY)
 
+  const trimmedTask = task.trim().toLowerCase()
+  const matchingDuplicate = existingReminders.find((r) => {
+    // 1. Primary signal: exact source message fingerprint match across extraction providers
+    if (
+      extractedData?.sourceFingerprint &&
+      r.sourceFingerprint &&
+      r.sourceFingerprint === extractedData.sourceFingerprint
+    ) {
+      return true
+    }
+
+    // 2. Semantic match (preserved for manual edits and legacy reminders without fingerprints)
+    if (!trimmedTask) return false
+    const existingTask = (r.task || '').trim().toLowerCase()
+    const existingDate = r.dueDate || ''
+    const currentDate = dueDate || ''
+    return existingTask === trimmedTask && existingDate === currentDate
+  })
+
   const handleApprove = () => {
     onApprove({
       task: task.trim() || 'Untitled Reminder',
       dueDate: dueDate || null,
       amount: amount !== '' ? Number(amount) : null,
-      category: category || DEFAULT_CATEGORY
+      category: category || DEFAULT_CATEGORY,
+      sourceFingerprint: extractedData?.sourceFingerprint || null
     })
   }
 
+  const isLocalExtraction = Boolean(
+    extractedData?.extractionNote &&
+    extractedData.extractionNote.toLowerCase().includes('local extraction')
+  )
+
   return (
-    <Card className="proposed-card">
+    <Card className={`proposed-card ${matchingDuplicate ? 'has-duplicate' : ''}`}>
       <div className="proposed-header">
         <h3 className="proposed-title">Review Proposed Reminder</h3>
         {extractedData?.extractionNote && (
-          <span className="note-badge" title={extractedData.extractionNote}>
-            AI Note Available
+          <span
+            className={isLocalExtraction ? 'badge-fallback' : 'note-badge'}
+            title={extractedData.extractionNote}
+          >
+            {isLocalExtraction ? 'Local Extraction' : 'AI Note'}
           </span>
         )}
       </div>
 
       {extractedData?.extractionNote && (
-        <p style={{ fontSize: '0.85rem', color: '#4B5563', marginBottom: '1rem', fontStyle: 'italic' }}>
-          {extractedData.extractionNote}
-        </p>
+        isLocalExtraction ? (
+          <div className="fallback-banner" role="status">
+            <span className="fallback-icon">ℹ️</span>
+            <span>{extractedData.extractionNote}</span>
+          </div>
+        ) : (
+          <p style={{ fontSize: '0.85rem', color: '#4B5563', marginBottom: '1rem', fontStyle: 'italic' }}>
+            {extractedData.extractionNote}
+          </p>
+        )
       )}
 
-      {duplicateWarning}
+      {matchingDuplicate && (
+        <DuplicateWarning
+          existingReminder={matchingDuplicate}
+          onViewExisting={onViewExisting}
+        />
+      )}
 
       <div className="form-grid">
         <div className="form-group-full">
@@ -120,11 +162,15 @@ export default function ProposedReminderCard({
         </Button>
         <Button
           type="button"
-          variant="primary"
+          variant={matchingDuplicate ? 'warning' : 'primary'}
           onClick={handleApprove}
           disabled={saving}
         >
-          {saving ? 'Saving…' : 'Approve & Save'}
+          {saving
+            ? 'Saving…'
+            : matchingDuplicate
+            ? 'Save Anyway'
+            : 'Approve & Save'}
         </Button>
       </div>
     </Card>

@@ -83,8 +83,23 @@ body {
 
 .action-row {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 1rem;
   margin-top: 0.85rem;
+}
+
+.analysis-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-right: auto;
+}
+
+.analysis-status-text {
+  font-weight: 500;
+  color: var(--accent-hover);
 }
 
 /* Buttons */
@@ -128,6 +143,20 @@ body {
   color: var(--text-primary);
 }
 
+.btn-warning {
+  background-color: #D97706;
+  color: #FFFFFF;
+}
+
+.btn-warning:hover:not(:disabled) {
+  background-color: #B45309;
+}
+
+.btn-warning:disabled {
+  background-color: #FCD34D;
+  cursor: not-allowed;
+}
+
 /* Loading indicators */
 .loading-indicator {
   display: flex;
@@ -164,6 +193,128 @@ body {
 /* Proposed Reminder Card */
 .proposed-card {
   border-left: 4px solid var(--accent-color);
+  transition: border-color 0.2s ease;
+}
+
+.proposed-card.has-duplicate {
+  border-left-color: var(--warning-border);
+}
+
+/* Duplicate Warning Banner */
+.duplicate-banner {
+  background-color: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  color: var(--warning-text);
+  font-size: 0.9rem;
+}
+
+.duplicate-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.duplicate-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.duplicate-message {
+  flex: 1;
+}
+
+.duplicate-preview {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: rgba(245, 166, 35, 0.08);
+  border: 1px dashed rgba(245, 166, 35, 0.4);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (min-width: 500px) {
+  .duplicate-preview {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.duplicate-preview-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  font-size: 0.825rem;
+}
+
+.duplicate-preview-task {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.duplicate-preview-amount {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.duplicate-preview-date {
+  color: var(--text-secondary);
+}
+
+.duplicate-preview-category {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  background: #FEF3C7;
+  color: #92400E;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.btn-view-existing {
+  background: none;
+  border: none;
+  color: #B45309;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  align-self: flex-start;
+}
+
+.btn-view-existing:hover {
+  color: #78350F;
+  background: rgba(245, 166, 35, 0.15);
+}
+
+/* Highlight Flash Animation for duplicate scroll-to */
+.highlight-flash {
+  animation: flashHighlight 1.6s ease-out;
+}
+
+@keyframes flashHighlight {
+  0% {
+    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.6);
+    background-color: #FEF3C7;
+  }
+  30% {
+    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.4);
+    background-color: #FEF3C7;
+  }
+  100% {
+    box-shadow: var(--shadow-sm);
+    background-color: #FFFFFF;
+  }
 }
 
 .proposed-header {
@@ -185,6 +336,36 @@ body {
   color: #1D4ED8;
   padding: 0.2rem 0.6rem;
   border-radius: var(--radius-sm);
+}
+
+.badge-fallback {
+  font-size: 0.725rem;
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.fallback-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-left: 3px solid #64748B;
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.fallback-icon {
+  font-size: 0.95rem;
+  line-height: 1.2;
 }
 
 .form-grid {

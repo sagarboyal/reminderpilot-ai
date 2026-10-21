@@ -25,6 +25,7 @@ export function useReminders() {
             ? Number(reminderData.amount)
             : null,
         category: reminderData.category || DEFAULT_CATEGORY,
+        sourceFingerprint: reminderData.sourceFingerprint || null,
         createdAt: new Date().toISOString()
       }
 
