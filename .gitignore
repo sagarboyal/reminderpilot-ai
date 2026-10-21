@@ -5,3 +5,33 @@
 .env
 .env.*
 !.env.example
+application-local.properties
+
+# Course harness variants
+.claude/
+agent/
+
+# Java & Spring Boot
+target/
+*.class
+*.jar
+*.war
+.mvn/wrapper/maven-wrapper.jar
+
+# Node & Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDE & OS
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
