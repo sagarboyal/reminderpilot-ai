@@ -3,17 +3,27 @@ import Card from '../../../components/Card'
 import Button from '../../../components/Button'
 import LoadingIndicator from '../../../components/LoadingIndicator'
 
-export default function AnalyzePanel({ onAnalyze, loading, loadingSlow, disabled }) {
-  const [message, setMessage] = useState('')
+export default function AnalyzePanel({
+  onAnalyze,
+  loading,
+  loadingSlow,
+  disabled,
+  message: controlledMessage,
+  onMessageChange
+}) {
+  const [internalMessage, setInternalMessage] = useState('')
+  const isControlled = controlledMessage !== undefined
+  const message = isControlled ? controlledMessage : internalMessage
+  const setMessage = isControlled ? onMessageChange : setInternalMessage
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const trimmed = message.trim()
+    const trimmed = (message || '').trim()
     if (!trimmed || loading || disabled) return
     onAnalyze(trimmed)
   }
 
-  const isSubmitDisabled = !message.trim() || loading || disabled
+  const isSubmitDisabled = !(message || '').trim() || loading || disabled
 
   return (
     <Card>

@@ -18,7 +18,7 @@ export async function analyzeMessage(message) {
       },
       body: JSON.stringify({ message: message.trim() })
     })
-  } catch (networkError) {
+  } catch {
     throw new Error(
       'Unable to connect to the ReminderPilot backend server. Please make sure the Spring Boot service is running on port 8080.'
     )
@@ -27,7 +27,7 @@ export async function analyzeMessage(message) {
   let data
   try {
     data = await response.json()
-  } catch (parseError) {
+  } catch {
     throw new Error('Received an unparseable response from the server.')
   }
 

@@ -253,3 +253,221 @@ body {
 .empty-text {
   font-size: 0.95rem;
 }
+
+/* Reminders Section & List */
+.reminders-card {
+  margin-top: 1.5rem;
+}
+
+.reminders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.reminders-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reminders-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--accent-bg-subtle);
+  color: var(--accent-color);
+  padding: 0.15rem 0.55rem;
+  border-radius: 9999px;
+}
+
+.reminder-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Individual Reminder Row */
+.reminder-row {
+  background: #FFFFFF;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.reminder-row:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: #CBD5E1;
+}
+
+/* Urgent state: due today or overdue */
+.reminder-row.urgent {
+  border-left-color: var(--error-color);
+  background: #FFFDFD;
+}
+
+.reminder-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+@media (min-width: 520px) {
+  .reminder-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.reminder-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.reminder-task {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.reminder-amount {
+  font-size: 0.825rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.reminder-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.reminder-date-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reminder-date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.date-urgent {
+  font-weight: 600;
+  color: var(--error-text);
+}
+
+.urgency-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.urgency-tag.overdue {
+  background: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid #FECACA;
+}
+
+.urgency-tag.today {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+  border: 1px solid #FDE68A;
+}
+
+/* Category Pills - Muted pastels per spec */
+.category-pill {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.725rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border: 1px solid transparent;
+}
+
+.category-bill {
+  background: #E7F5FF;
+  color: #1971C2;
+  border-color: #A5D8FF;
+}
+
+.category-appointment {
+  background: #F3F0FF;
+  color: #6741D9;
+  border-color: #D0BFFF;
+}
+
+.category-subscription {
+  background: #E6FCF5;
+  color: #0CA678;
+  border-color: #96F2D7;
+}
+
+.category-other {
+  background: #F1F3F5;
+  color: #495057;
+  border-color: #CED4DA;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: #FFFFFF;
+  color: var(--success-text);
+  border: 1px solid #86EFAC;
+  border-left: 4px solid var(--success-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 1000;
+  animation: slideUpFade 0.25s ease-out;
+}
+
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--success-bg);
+  color: var(--success-color);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

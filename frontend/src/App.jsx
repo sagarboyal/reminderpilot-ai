@@ -1,24 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Card from './components/Card'
+import Toast from './components/Toast'
 import AnalyzePanel from './features/reminders/components/AnalyzePanel'
 import ProposedReminderCard from './features/reminders/components/ProposedReminderCard'
+import ReminderList from './features/reminders/components/ReminderList'
 import { useAnalyzeReminder } from './features/reminders/hooks/useAnalyzeReminder'
+import { useReminders } from './features/reminders/hooks/useReminders'
 
 export default function App() {
+  const [inputText, setInputText] = useState('')
+  const [toastVisible, setToastVisible] = useState(false)
+  const [saving, setSaving] = useState(false)
+
   const {
     loading,
     loadingSlow,
     extractedData,
-    error,
+    error: analyzeError,
     analyze,
-    clear
+    clear: clearAnalysis
   } = useAnalyzeReminder()
 
-  const handleApprove = (reminder) => {
-    alert(
-      `Approved reminder: "${reminder.task}" due ${reminder.dueDate || 'No date'} (${reminder.category}). Slice 2 will persist this into localStorage!`
-    )
-    clear()
+  const {
+    reminders,
+    addReminder,
+    storageError,
+    clearStorageError
+  } = useReminders()
+
+  const handleApprove = async (reminderData) => {
+    try {
+      setSaving(true)
+      addReminder(reminderData)
+      setToastVisible(true)
+      setInputText('')
+      clearAnalysis()
+    } catch (err) {
+      console.error('Error saving reminder:', err)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleCancel = () => {
+    // Retain inputText in paste box so user can edit and retry, just dismiss proposed card
+    clearAnalysis()
   }
 
   return (
@@ -31,38 +57,57 @@ export default function App() {
       <main>
         {/* Paste Box & Analyze Button */}
         <AnalyzePanel
+          message={inputText}
+          onMessageChange={setInputText}
           onAnalyze={analyze}
           loading={loading}
           loadingSlow={loadingSlow}
         />
 
-        {/* Error message */}
-        {error && (
+        {/* Extraction Error */}
+        {analyzeError && (
           <Card style={{ borderLeft: '4px solid var(--error-color)', background: 'var(--error-bg)' }}>
-            <p style={{ color: 'var(--error-text)', fontSize: '0.9rem' }}>{error}</p>
+            <p style={{ color: 'var(--error-text)', fontSize: '0.9rem' }}>{analyzeError}</p>
+          </Card>
+        )}
+
+        {/* Storage Error */}
+        {storageError && (
+          <Card style={{ borderLeft: '4px solid var(--error-color)', background: 'var(--error-bg)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ color: 'var(--error-text)', fontSize: '0.9rem' }}>{storageError}</p>
+              <button
+                type="button"
+                onClick={clearStorageError}
+                style={{ background: 'none', border: 'none', color: 'var(--error-text)', cursor: 'pointer', fontWeight: 600 }}
+              >
+                Dismiss
+              </button>
+            </div>
           </Card>
         )}
 
         {/* Review Proposed Reminder Card */}
         {extractedData && (
           <ProposedReminderCard
+            key={`${extractedData.task}-${extractedData.dueDate}-${extractedData.amount}`}
             extractedData={extractedData}
             onApprove={handleApprove}
-            onCancel={clear}
+            onCancel={handleCancel}
+            saving={saving}
           />
         )}
 
-        {/* Upcoming Reminders Section */}
-        <section className="card">
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem' }}>
-            Upcoming Reminders
-          </h2>
-          <div className="empty-state">
-            <div className="empty-icon">📋</div>
-            <p className="empty-text">No reminders yet. Paste your first message above to get started.</p>
-          </div>
-        </section>
+        {/* Upcoming Reminders List */}
+        <ReminderList reminders={reminders} />
       </main>
+
+      {/* Confirmation Toast */}
+      <Toast
+        message="Reminder saved ✓"
+        visible={toastVisible}
+        onDismiss={() => setToastVisible(false)}
+      />
     </div>
   )
 }

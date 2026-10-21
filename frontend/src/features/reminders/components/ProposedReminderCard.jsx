@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Card from '../../../components/Card'
 import Button from '../../../components/Button'
 import { REMINDER_CATEGORIES, DEFAULT_CATEGORY } from '../constants'
@@ -10,23 +10,14 @@ export default function ProposedReminderCard({
   duplicateWarning = null,
   saving = false
 }) {
-  const [task, setTask] = useState('')
-  const [dueDate, setDueDate] = useState('')
-  const [amount, setAmount] = useState('')
-  const [category, setCategory] = useState(DEFAULT_CATEGORY)
-
-  useEffect(() => {
-    if (extractedData) {
-      setTask(extractedData.task || '')
-      setDueDate(extractedData.dueDate || '')
-      setAmount(
-        extractedData.amount !== null && extractedData.amount !== undefined
-          ? extractedData.amount
-          : ''
-      )
-      setCategory(extractedData.category || DEFAULT_CATEGORY)
-    }
-  }, [extractedData])
+  const [task, setTask] = useState(() => extractedData?.task || '')
+  const [dueDate, setDueDate] = useState(() => extractedData?.dueDate || '')
+  const [amount, setAmount] = useState(() =>
+    extractedData?.amount !== null && extractedData?.amount !== undefined
+      ? extractedData.amount
+      : ''
+  )
+  const [category, setCategory] = useState(() => extractedData?.category || DEFAULT_CATEGORY)
 
   const handleApprove = () => {
     onApprove({
