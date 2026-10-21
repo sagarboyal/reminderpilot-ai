@@ -49,7 +49,7 @@ Build mode: learn
   Learner check: Paste the same bill message a second time, click Analyze, and verify the amber duplicate warning appears and "Save Anyway" allows saving.
   Commit: add duplicate reminder detection with warning banner
 
-- [ ] **5. Reminder management and graceful failure handling**
+- [x] **5. Reminder management and graceful failure handling**
   Becomes usable: Full reminder lifecycle (Mark Done with 1.5s strikethrough animation before removal, inline Edit with save/cancel, Delete with confirmation dialog), plus graceful handling when AI extraction fails (gentle message with blank editable card) and Cancel button behavior.
   Why now: Completes all secondary behaviors and edge cases needed for a robust one-minute demo.
   PRD ref: `prd.md > Upcoming Reminders List (Actions per row)`, `prd.md > Extraction Failure`, `prd.md > Cancel`
@@ -61,25 +61,27 @@ Build mode: learn
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — Slice 3 (full paste-extract-approve-persist loop)
-- [ ] Final kick-the-tires exploration and feedback completed — Slice 5
+- [x] Early usable behavior explored — Slice 3 (full paste-extract-approve-persist loop)
+- [x] Final kick-the-tires exploration and feedback completed — Slice 5
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: [to be filled during learning wrap-up]
-Route and stops: [to be filled during learning wrap-up]
-Edit outcome: [to be filled during learning wrap-up]
-Reflection: [to be filled during learning wrap-up]
-Activity mode: [to be filled during learning wrap-up]
+Activity and evidence: Focused engineering wrap-up connecting duplicate detection across extraction methods (deterministic 64-bit source message fingerprinting) with resilient local fallback when Gemini encounters demand surges.
+Route and stops: 1. `frontend/src/utils/fingerprint.js` (`computeMessageFingerprint`); 2. `backend/src/main/java/com/reminderpilot/service/ExtractionService.java` (`extractLocally`); 3. `frontend/src/features/reminders/components/ProposedReminderCard.jsx` & `frontend/src/features/reminders/hooks/useReminders.js`.
+Edit outcome: Verified via unit test suites (`slice5-lifecycle.test.js`, `duplicate-and-ui.test.js`, `AnalyzeControllerTest.java`).
+Reflection: Reusable engineering practice: Decouple identity (fingerprinting raw input) from provider interpretations (AI summaries) for deterministic data integrity.
+Activity mode: Learn mode with hands-on verification across all 5 slices.
 
 ## Revisions
 
 - Inserted Slice 2 for backend startup Gemini connectivity check and diagnostic logging per learner request before persisting reminders. Configured default model to gemini-3.8-flash per Google API requirements.
+- Enhanced duplicate detection in Slice 4 with deterministic 64-bit source message fingerprinting (`sourceFingerprint`) to guard against provider title mismatches between Gemini and offline local extraction.
+- Refactored message analysis loading state from bulky separate box into compact inline indicator, and sanitized backend exception propagation to display calm local extraction advisory notices.
